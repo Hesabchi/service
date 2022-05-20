@@ -1,0 +1,33 @@
+
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "target": "es6",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "baseUrl": "./src",
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "paths": { 
+            "@handlesErrors/*":["common/handlesErrors/*"],
+            "@interfaces/*":["common/interfaces/*"],
+            "@middlewares/*":["common/middlewares/*"],
+            "@utils/*":["common/utils/*"],
+            "@config/*":["config/*"],
+            "@entities/*":["entities/*"],
+            "@repository-db/*":["repository/db/*"],
+            "@repository-services/*":["repository/services/*"],
+            "@use-cases/*":["use-cases/*"],
+        }
+    },
+    "include": [
+        "./src/**/*.ts"],    "exclude": [
+        "node_modules"
+    ],
+    
+}
+
+
+   
