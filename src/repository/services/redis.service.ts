@@ -21,17 +21,29 @@ export class RedisService{
 
     // this function set given key ,value and expire time in the redis database
     public async set(key: string, value: string, ex:number = 120){
-        await this.redisClient.set(key, value, {
-            EX: ex
-        })
+        try {
+            await this.redisClient.set(key, value, {
+                EX: ex
+            })
+        } catch (error) {
+            throw new Error(error)
+        }
     }
 
     // this function retrieve value from given key
     public async get(key: string){
-        return await this.redisClient.get(key)
+        try {
+            return await this.redisClient.get(key)
+        } catch (error) {
+            throw new Error(error)
+        }
     }
 
     public async delete(key: string){
-        await this.redisClient.del(key)
+        try {
+            await this.redisClient.del(key)
+        } catch (error) {
+            throw new Error(error)
+        }
     }
 }

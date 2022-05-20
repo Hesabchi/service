@@ -19,16 +19,17 @@ export default class UserController{
 
 
     private initalRoute(){
-        this.router.get('/challenge', apiLimiter ,  (req, res) => this.getChallenge(req, res))
+        this.router.post('/challenge', apiLimiter ,  (req, res) => this.getChallenge(req, res))
         this.router.post('/login', apiLimiter ,  (req, res) => this.login(req, res))
+        this.router.post('/enable-wallet', apiLimiter ,  (req, res) => this.login(req, res))
     }
 
     public async getChallenge(req: Request, res: Response){
         try{
-            let data = new getChallengeDTO(req.body)
-            data.validate();
+            let data = new getChallengeDTO(req.body)            
+            await data.validate();
 
-            const challenge = await this.userUseCase.getChallenge(data.publickey);
+            const challenge = await this.userUseCase.getChallenge(data.public_key);
             const response: IResponse = {
                 success: true,
                 message: '',
@@ -46,9 +47,9 @@ export default class UserController{
     public async login(req: Request, res: Response){
         try{
             let data = new loginDTO(req.body)
-            data.validate();
+            await data.validate();
 
-            const loginRes = await this.userUseCase.login(data.publickey, data.signature)
+            const loginRes = await this.userUseCase.login(data.public_key, data.signature)
             const response: IResponse = {
                 success: true,
                 message: '',

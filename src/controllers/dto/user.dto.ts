@@ -5,11 +5,11 @@ import {Exception} from '../../common/handlesErrors/handleError'
 
 export class getChallengeDTO{
     constructor(data:any){
-        this.publickey = data.email;
+        this.public_key = data.public_key;
     }
 
     @IsNotEmpty({message: 'کلید عمومی نباید خالی باشد'})
-    publickey: string;
+    public_key: string;
 
     public async validate(){
         let errors = await validate(this);            
@@ -21,11 +21,12 @@ export class getChallengeDTO{
 
 export class loginDTO{
     constructor(data:any){
-        this.publickey = data.email;
+        this.public_key = data.public_key;
+        this.signature = data.signature;
     }
 
     @IsNotEmpty({message: 'کلید عمومی نباید خالی باشد'})
-    publickey: string;
+    public_key: string;
 
     @IsNotEmpty({message: 'امضا نباید خالی باشد'})
     signature: string;

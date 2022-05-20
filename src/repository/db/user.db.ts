@@ -1,12 +1,11 @@
 import { User } from "../../entities/user/user.entity";
 import { getRepository } from "typeorm";
-import { getConnection } from "typeorm";
 import { HandleError  , Exception} from '../../common/handlesErrors/handleError';
 import {IcreateUser} from '../../common/interfaces/user.interface'
 
 export class UserDb{
 
-  private userRepository = getRepository(User) 
+    private userRepository = getRepository(User) 
     
     constructor(){
      

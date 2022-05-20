@@ -1,8 +1,6 @@
 import App from './app';
 import * as bodyParser from 'body-parser';
 import {createConnection} from 'typeorm';
-import { checkLanguage } from './common/middlewares/checkLang';
-import { checkDeviceId } from './common/middlewares/checkDeviceId';
 import UserController from './controllers/user/user.controller'
 
 const cors = require('cors');
@@ -37,9 +35,7 @@ async function main(){
             cors(),
             bodyParser.json(),
             bodyParser.urlencoded({extended : false}),
-            morgan(':method :url :status - :response-time ms'),
-            checkLanguage,
-            checkDeviceId,
+            morgan(':method :url :status - :response-time ms')
         ]
     })
     app.listen() 

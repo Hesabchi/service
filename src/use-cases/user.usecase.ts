@@ -2,8 +2,7 @@ import { RedisService } from '../repository/services/redis.service'
 import{ UserDb } from '../repository/db/user.db'
 import{ SessionDb } from '../repository/db/session.db'
 import{ FederationDb } from '../repository/db/federation.db'
-import * as randomSentence from 'random-sentence'
-import { Exception } from '@handlesErrors/handleError'
+import { Exception } from './../common/handlesErrors/handleError'
 import { User } from '@entities/user/user.entity'
 import * as crypto from 'crypto';
 import * as jsonWebToken from 'jsonwebtoken';
@@ -11,6 +10,7 @@ import { IJWTPayload } from '@interfaces/jwt.interface'
 
 
 const StellarSdk = require('stellar-sdk')
+const randomSentence = require('random-sentence');
 
 export class UserUseCase{
 
@@ -30,7 +30,7 @@ export class UserUseCase{
     public async getChallenge(publicKey: string):Promise<string>{
         try {        
             let sentence = randomSentence({min: 15, max: 20})            
-            await this.redisService.set(`challenge_${publicKey}`, sentence, 3600)
+            this.redisService.set(`challenge_${publicKey}`, sentence, 3600)
             return sentence
         } catch (error) {
             throw error
