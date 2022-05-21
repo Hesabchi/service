@@ -21,7 +21,6 @@ export default class UserController{
     private initalRoute(){
         this.router.post('/challenge', apiLimiter ,  (req, res) => this.getChallenge(req, res))
         this.router.post('/login', apiLimiter ,  (req, res) => this.login(req, res))
-        this.router.post('/enable-wallet', apiLimiter ,  (req, res) => this.login(req, res))
     }
 
     public async getChallenge(req: Request, res: Response){
@@ -54,8 +53,7 @@ export default class UserController{
                 success: true,
                 message: '',
                 data: {
-                    access_tone: loginRes.accessToken,
-                    wallet_public_key: loginRes.walletPublicKey
+                    access_token: loginRes.accessToken,
                 }
             }
             res.status(200).json(response)
@@ -64,5 +62,6 @@ export default class UserController{
             HandleError(res, err)
         }
     }
+
 
 }

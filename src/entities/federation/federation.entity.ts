@@ -13,10 +13,7 @@ export class Federation extends BaseEntity{
     user: User
 
     @Column({nullable : false})
-    personal_public_key : string
-
-    @Column({nullable : true})
-    wallet_public_key : string
+    public_key : string
 
     @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })  
     created_at: Date;

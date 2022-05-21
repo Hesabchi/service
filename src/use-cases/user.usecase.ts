@@ -7,6 +7,7 @@ import { User } from '@entities/user/user.entity'
 import * as crypto from 'crypto';
 import * as jsonWebToken from 'jsonwebtoken';
 import { IJWTPayload } from '@interfaces/jwt.interface'
+import { HorizonService } from './../repository/services/horison.servcie'
 
 
 const StellarSdk = require('stellar-sdk')
@@ -19,12 +20,14 @@ export class UserUseCase{
     private sessionDb:SessionDb
     private federationDb:FederationDb
     private redisService:RedisService
+    private horizonService:HorizonService
 
     constructor(){
         this.userDb = new UserDb()
         this.sessionDb = new SessionDb()
         this.federationDb = new FederationDb()
         this.redisService = new RedisService()
+        this.horizonService = new HorizonService()
     }
 
     public async getChallenge(publicKey: string):Promise<string>{
@@ -40,21 +43,24 @@ export class UserUseCase{
 
     public async login(publicKey: string, signature: string):Promise<any>{
         try {        
-            let challenge = await this.redisService.get(publicKey);            
+            let challenge = await this.redisService.get(`challenge_${publicKey}`);            
             let keypair = StellarSdk.Keypair.fromPublicKey(publicKey)
+            
             let sigResult = StellarSdk.verify(Buffer.from(challenge, 'utf-8'), Buffer.from(signature, 'base64'), keypair.rawPublicKey())
             if(!sigResult){
                 throw new Exception(400, 'امضا صحیح نمی باشد')
             }
 
-            let federation = await this.federationDb.findByPersonalPublicKey(publicKey);
+            let federation = await this.federationDb.findByPublicKey(publicKey);
             let user: User;
             if(!federation){
                 user = await this.userDb.create({})
                 federation = await this.federationDb.create({
-                    personal_public_key: publicKey,
+                    public_key: publicKey,
                     user: user,
                 })
+            }else{
+                user = federation.user
             }
 
             const tokenSecret = crypto.randomBytes(64).toString('hex')
@@ -78,13 +84,12 @@ export class UserUseCase{
 
             return {
                 accessToken: accessToken,
-                walletPublicKey: federation.wallet_public_key
             };
 
         } catch (error) {
            throw error
         }
        
-      }
+    }
 
 }
