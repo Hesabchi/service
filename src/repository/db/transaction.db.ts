@@ -5,7 +5,7 @@ import { HandleError } from '../../common/handlesErrors/handleError';
 import { User } from "../../entities/user/user.entity";
 import { Transaction } from "../../entities/transaction/transaction.entity";
 import { TransactionMember } from "../../entities/transactionMember/transactionMember.entity";
-import { IcreateTransaction, IcreateTransactionMember } from "../../common/interfaces/transaction.interface";
+import { Iclaim, IcreateTransaction, IcreateTransactionMember } from "../../common/interfaces/transaction.interface";
 import { db } from "./../../server";
 
 
@@ -41,13 +41,22 @@ export class TransactionDb{
         return transactionMember;
     }
 
-    public async getClaims(owner: User):Promise<TransactionMember[]>{
-        const claims = await this.transactionMemberRepository.createQueryBuilder('transaction_member')
-            .innerJoin('transaction_member.transaction', 'transaction')
-            .where('transaction.owner = :owner', {owner: owner})
-            .where('transaction_member.hash = :hash', {hash: ""})
-            .getMany()
-        return claims
+    public async getClaims(owner: User):Promise<Iclaim[]>{
+        const claims = await getConnection().createQueryBuilder()
+                            .select('transaction_member')
+                            .from(TransactionMember , 'transaction_member')
+                            .innerJoinAndSelect('transaction', 'transaction' , 'transaction_member.transactionId = transaction.id')
+                            .where('transaction.ownerId = :ownerId', {ownerId: owner.id})
+                            .andWhere('transaction_member.hash = :hash', {hash: ""})
+                            .innerJoinAndSelect('federation', 'federation', 'transaction_member.member = federation.userId')
+                            .select([
+                                'transaction_member.amount as amount',
+                                'transaction.created_at as created_as',
+                                'transaction.title as title',
+                                'federation.public_key as publicKey'
+                            ])
+                            .getRawMany()
+        return claims;
     }
 
 

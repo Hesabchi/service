@@ -12,3 +12,10 @@ export interface IcreateTransactionMember{
     transaction: Transaction,
     amount: string
 }
+
+export interface Iclaim{
+    amount: string,
+    created_at: Date,
+    title: string,
+    publicKey: string
+}

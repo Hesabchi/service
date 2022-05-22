@@ -64,15 +64,8 @@ export class CostUseCase{
         const owner = await this.userDb.findById(userId)
 
         const claims = await this.transactionDB.getClaims(owner);
-        
+    
         return claims
-            /* return{
-                id: claim.id,
-                amount: claim.amount,
-                member:{
-                    public_key: claim.member.federation.public_key
-                }
-            } */
     }
      
 }
