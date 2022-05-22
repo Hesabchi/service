@@ -1,9 +1,10 @@
-import {BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { TransactionMember } from './../../entities/transactionMember/transactionMember.entity'
+import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { User } from '../user/user.entity'
 
 
 @Entity()
-export class Cost extends BaseEntity{
+export class Transaction extends BaseEntity{
     @PrimaryGeneratedColumn('increment') 
     id: number
 
@@ -14,7 +15,7 @@ export class Cost extends BaseEntity{
     title: string 
 
     @Column({nullable: false})
-    amount: number 
+    amount: string 
 
     @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })  
     created_at: Date;

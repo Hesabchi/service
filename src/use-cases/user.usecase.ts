@@ -3,10 +3,10 @@ import{ UserDb } from '../repository/db/user.db'
 import{ SessionDb } from '../repository/db/session.db'
 import{ FederationDb } from '../repository/db/federation.db'
 import { Exception } from './../common/handlesErrors/handleError'
-import { User } from '@entities/user/user.entity'
+import { User } from './../entities/user/user.entity'
 import * as crypto from 'crypto';
 import * as jsonWebToken from 'jsonwebtoken';
-import { IJWTPayload } from '@interfaces/jwt.interface'
+import { IJWTPayload } from './../common/interfaces/jwt.interface'
 import { HorizonService } from './../repository/services/horison.servcie'
 
 

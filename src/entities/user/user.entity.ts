@@ -1,5 +1,6 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from 'typeorm'
+import {BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {IsEmail, IsNotEmpty } from 'class-validator'
+import { Federation } from './../../entities/federation/federation.entity'
 
 
 @Entity()
@@ -31,4 +32,6 @@ export class User extends BaseEntity{
     @Column({nullable: false , type: 'boolean' , default: true})
     active: boolean
 
+    @OneToOne(()=> Federation, (federation) => federation.user)
+    federation: Federation
 } 

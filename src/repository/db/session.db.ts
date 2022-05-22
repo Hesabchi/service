@@ -3,7 +3,7 @@ import { Session } from "../../entities/session/session.entity";
 import { getRepository } from "typeorm";
 import { getConnection } from "typeorm";
 import { HandleError } from '../../common/handlesErrors/handleError';
-import { IcreateSession } from "@interfaces/session.interafce";
+import { IcreateSession } from "../../common/interfaces/session.interafce";
 
 
 export class SessionDb{

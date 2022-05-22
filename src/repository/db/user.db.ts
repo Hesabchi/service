@@ -34,8 +34,8 @@ export class UserDb{
      
     }
 
-    public async findById(data : {userId : number}): Promise<User | null>{
-        let user:User = await this.userRepository.findOne({id: data.userId});
+    public async findById(userId: number): Promise<User | null>{
+        let user:User = await this.userRepository.findOne({id: userId});
         return user
     }
 

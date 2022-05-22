@@ -1,22 +1,22 @@
-import { Cost } from './../cost/cost.entity'
+import { Transaction } from '../transaction/transaction.entity'
 import {BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { User } from '../user/user.entity'
 
 
 @Entity()
-export class CostUser extends BaseEntity{
+export class TransactionMember extends BaseEntity{
     @PrimaryGeneratedColumn('increment') 
     id: number
 
     @ManyToOne(() => User)
-    user: User   
+    member: User   
 
-    @ManyToOne(() => Cost)
-    cost: Cost
+    @ManyToOne(() => Transaction)
+    transaction: Transaction
 
     @Column({nullable: false})
     hash: string 
 
     @Column({nullable: false})
-    amount: number 
+    amount: string 
 } 

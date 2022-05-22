@@ -10,17 +10,6 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "esModuleInterop": true,
-        "paths": { 
-            "@handlesErrors/*":["common/handlesErrors/*"],
-            "@interfaces/*":["common/interfaces/*"],
-            "@middlewares/*":["common/middlewares/*"],
-            "@utils/*":["common/utils/*"],
-            "@config/*":["config/*"],
-            "@entities/*":["entities/*"],
-            "@repository-db/*":["repository/db/*"],
-            "@repository-services/*":["repository/services/*"],
-            "@use-cases/*":["use-cases/*"],
-        }
     },
     "include": [
         "./src/**/*.ts"],    "exclude": [

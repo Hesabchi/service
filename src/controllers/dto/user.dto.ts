@@ -1,4 +1,4 @@
-import { IResponse } from '@interfaces/response.interface';
+import { IResponse } from './../../common/interfaces/response.interface';
 import {IsNotEmpty  , validate, IsEmail} from 'class-validator'
 import {Exception} from '../../common/handlesErrors/handleError'
 
