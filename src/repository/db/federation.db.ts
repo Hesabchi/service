@@ -18,6 +18,10 @@ export class FederationDb{
         return await this.federationRepository.findOne({id: id});
     }
 
+    public async findByUser(user: User): Promise<Federation | null>{  
+        return await this.federationRepository.findOne({user: user});
+    }
+
     public async findByPublicKey(publicKey: string): Promise<Federation | null>{  
         return await this.federationRepository.findOne({public_key: publicKey}, {relations: ['user']});
     }

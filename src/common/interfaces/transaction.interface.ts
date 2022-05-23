@@ -19,3 +19,12 @@ export interface Iclaim{
     title: string,
     publicKey: string
 }
+
+
+export interface Idepts{
+    amount: string,
+    created_at: Date,
+    title: string,
+    publicKey: string
+    id: number
+}

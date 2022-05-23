@@ -23,4 +23,22 @@ export class HorizonService{
         }
 
     }
+
+    public async getTransactionByHash(hash: string):Promise<StellarSDK.ServerApi.TransactionRecord>{
+        try {
+            const res = await this.api.get(`/transactions/${hash}`).then(result => result.data)
+            return res;
+        } catch (error) {            
+            throw new Exception(400, 'تراکنشی با این مشخصات در شبکه ققنوس یافت نشد')
+        }
+    }
+
+    public async getTransactionPaymentByHash(hash: string):Promise<StellarSDK.Horizon.PaymentOperationResponse[]>{
+        try {
+            const res = await this.api.get(`/transactions/${hash}/payments`).then(result => result.data._embedded.records)
+            return res;
+        } catch (error) {            
+            throw new Exception(400, 'تراکنشی با این مشخصات در شبکه ققنوس یافت نشد')
+        }
+    }
 }

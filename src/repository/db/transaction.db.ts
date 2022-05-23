@@ -5,7 +5,7 @@ import { HandleError } from '../../common/handlesErrors/handleError';
 import { User } from "../../entities/user/user.entity";
 import { Transaction } from "../../entities/transaction/transaction.entity";
 import { TransactionMember } from "../../entities/transactionMember/transactionMember.entity";
-import { Iclaim, IcreateTransaction, IcreateTransactionMember } from "../../common/interfaces/transaction.interface";
+import { Iclaim, IcreateTransaction, IcreateTransactionMember, Idepts } from "../../common/interfaces/transaction.interface";
 import { db } from "./../../server";
 
 
@@ -41,6 +41,19 @@ export class TransactionDb{
         return transactionMember;
     }
 
+    public async findTransactionMemberById(id: number): Promise<TransactionMember | null>{  
+        return await this.transactionMemberRepository.findOne({id: id}, {relations: ['transaction', 'transaction.owner']});
+    }
+
+    public async findTransactionById(id: number): Promise<Transaction | null>{  
+        return await this.transactionRepository.findOne({id: id});
+    }
+
+    public async setTransactionMemberHash(id: number, hash: string): Promise<void>{  
+        await this.transactionMemberRepository.update({id: id}, {hash: hash});
+    }
+
+
     public async getClaims(owner: User):Promise<Iclaim[]>{
         const claims = await getConnection().createQueryBuilder()
                             .select('transaction_member')
@@ -51,12 +64,31 @@ export class TransactionDb{
                             .innerJoinAndSelect('federation', 'federation', 'transaction_member.member = federation.userId')
                             .select([
                                 'transaction_member.amount as amount',
-                                'transaction.created_at as created_as',
+                                'transaction.created_at as created_at',
                                 'transaction.title as title',
-                                'federation.public_key as publicKey'
+                                'federation.public_key as publickey'
                             ])
-                            .getRawMany()
+                            .getRawMany()                            
         return claims;
+    }
+
+    public async getDepts(member: User):Promise<Idepts[]>{
+        const depts = await getConnection().createQueryBuilder()
+                            .select('transaction_member')
+                            .from(TransactionMember , 'transaction_member')
+                            .innerJoinAndSelect('transaction', 'transaction' , 'transaction_member.transactionId = transaction.id')
+                            .where('transaction_member.memberId = :memberId', {memberId: member.id})
+                            .andWhere('transaction_member.hash = :hash', {hash: ""})
+                            .innerJoinAndSelect('federation', 'federation', 'transaction.ownerId = federation.userId')
+                            .select([
+                                'transaction_member.amount as amount',
+                                'transaction.created_at as created_at',
+                                'transaction.title as title',
+                                'federation.public_key as publickey',
+                                'transaction_member.id as id'
+                            ])
+                            .getRawMany()                            
+        return depts;
     }
 
 

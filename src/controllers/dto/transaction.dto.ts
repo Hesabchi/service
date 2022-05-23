@@ -3,7 +3,7 @@ import {IsNotEmpty  , validate, IsEmail} from 'class-validator'
 import {Exception} from '../../common/handlesErrors/handleError'
 
 
-export class newCostDTO{
+export class newTransactionDTO{
     constructor(data:any){
         this.title = data.title;
         this.amount = data.amount;
@@ -20,6 +20,22 @@ export class newCostDTO{
     include_me: boolean;
 
     users: string[];
+
+    public async validate(){
+        let errors = await validate(this);            
+        if(errors.length > 0){
+            throw new Exception(400 , errors[0].constraints[Object.keys(errors[0].constraints)[0]])
+        }
+    }
+}
+
+export class newPaymentDTO{
+    constructor(data:any){
+        this.hash = data.hash;
+    }
+
+    @IsNotEmpty({message: 'هش تراکنس نباید خالی باشد'})
+    hash: string;
 
     public async validate(){
         let errors = await validate(this);            
